@@ -57,7 +57,7 @@ flutter:
 simple_splash_view:
   image: assets/images/logo_light.png
   image_dark: assets/images/logo_dark.png
-  sound: assets/audio/intro.mp3
+  # sound: assets/audio/intro.mp3
   text: "CartonPro"
   background_color: "#FFFFFF"
   background_color_dark: "#121212"
@@ -68,7 +68,7 @@ simple_splash_view:
   indicator_color_dark: "#FFC107"
   indicator_position: below_visual
   text_position: bottom
-  duration: 3200
+  duration: 5000 # 5 seconds
   theme:
     mode: system
     app_theme: "Theme.App"

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../screens/settings_screen.dart';
+import 'package:go_router/go_router.dart';
 
 class AppDrawer extends StatelessWidget {
   const AppDrawer({super.key});
@@ -15,7 +15,6 @@ class AppDrawer extends StatelessWidget {
             padding: const EdgeInsets.all(16.0),
             decoration: BoxDecoration(
               color: Theme.of(context).primaryColor,
-              // Optional: Add gradient or shadow
             ),
             child: const Column(
               children: [
@@ -23,8 +22,6 @@ class AppDrawer extends StatelessWidget {
                   radius: 40,
                   backgroundImage: AssetImage('assets/images/logo_light.png'),
                   backgroundColor: Colors.white,
-                  // Optional: Add a border
-                  // foregroundColor: Theme.of(context).colorScheme.onSurface,
                 ),
                 SizedBox(height: 8),
                 Text(
@@ -47,29 +44,23 @@ class AppDrawer extends StatelessWidget {
                   leading: const Icon(Icons.home),
                   title: const Text('الرئيسية'),
                   onTap: () {
-                    // Navigate to Home
-                    Navigator.pop(context);
-                    // TODO: Add navigation logic
+                    context.go('/'); // Navigate to home
+                    Navigator.pop(context); // Close drawer
                   },
                 ),
                 ListTile(
                   leading: const Icon(Icons.settings),
                   title: const Text('الإعدادات'),
                   onTap: () {
-                    // Navigate to Settings
-                    Navigator.pop(context);
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const SettingsScreen()),
-                    );
+                    context.go('/settings'); // Navigate to settings
+                    Navigator.pop(context); // Close drawer
                   },
                 ),
                 ListTile(
                   leading: const Icon(Icons.login),
                   title: const Text('تسجيل الدخول'),
                   onTap: () {
-                    // Navigate to Login
+                    // context.go('/login'); // Navigate to login
                     Navigator.pop(context);
                     // TODO: Add navigation logic
                   },
@@ -78,7 +69,7 @@ class AppDrawer extends StatelessWidget {
                   leading: const Icon(Icons.info),
                   title: const Text('من نحن'),
                   onTap: () {
-                    // Navigate to About Me
+                    // context.go('/about'); // Navigate to about
                     Navigator.pop(context);
                     // TODO: Add navigation logic
                   },
@@ -87,7 +78,7 @@ class AppDrawer extends StatelessWidget {
                   leading: const Icon(Icons.privacy_tip),
                   title: const Text('سياسة الخصوصية'),
                   onTap: () {
-                    // Navigate to Privacy Policy
+                    // context.go('/privacy'); // Navigate to privacy
                     Navigator.pop(context);
                     // TODO: Add navigation logic
                   },

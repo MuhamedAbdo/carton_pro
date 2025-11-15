@@ -32,6 +32,7 @@ android {
 
     buildTypes {
         release {
+        proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
             // TODO: Add your own signing config for the release build.
             // Signing with the debug keys for now, so `flutter run --release` works.
             signingConfig = signingConfigs.getByName("debug")
@@ -41,4 +42,9 @@ android {
 
 flutter {
     source = "../.."
+}
+
+dependencies {
+    implementation("androidx.appcompat:appcompat:1.6.1")
+    implementation("com.google.android.material:material:1.12.0")
 }
