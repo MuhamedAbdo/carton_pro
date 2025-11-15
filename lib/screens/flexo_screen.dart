@@ -2,25 +2,29 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../widgets/app_drawer.dart';
 
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+class FlexoScreen extends StatelessWidget {
+  const FlexoScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'CartonPro',
-          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          'الفلكسو',
+          style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+          ),
         ),
         centerTitle: true,
         elevation: 1,
       ),
-      drawer: const AppDrawer(),
+      drawer: const AppDrawer(), // ✅ الـ Drawer متاح في كل الشاشات
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
+            // عنوان فوق الأزرار
             Container(
               width: double.infinity,
               padding: const EdgeInsets.symmetric(vertical: 12),
@@ -44,66 +48,50 @@ class HomeScreen extends StatelessWidget {
                 children: [
                   _buildHomeButton(
                     context: context,
-                    icon: Icons.factory,
-                    label: 'خط الإنتاج',
+                    icon: Icons.build_circle,
+                    label: 'تركيب السيريل',
                     onTap: () {
-                      _showSnackBar(context, 'خط الإنتاج');
+                      _showSnackBar(context, 'تركيب السيريل');
                     },
                   ),
                   _buildHomeButton(
                     context: context,
-                    icon: Icons.print,
-                    label: 'الفلكسو',
+                    icon: Icons.receipt,
+                    label: 'تقرير الأحبار',
                     onTap: () {
-                      context.push('/flexo'); // ✅ استخدم go_router
+                      _showSnackBar(context, 'تقرير الأحبار');
                     },
                   ),
                   _buildHomeButton(
                     context: context,
-                    icon: Icons.cut,
-                    label: 'التكسير',
+                    icon: Icons.inventory,
+                    label: 'وارد المخزن',
                     onTap: () {
-                      _showSnackBar(context, 'التكسير');
+                      _showSnackBar(context, 'وارد المخزن');
                     },
                   ),
                   _buildHomeButton(
                     context: context,
-                    icon: Icons.push_pin,
-                    label: 'الدبوس',
+                    icon: Icons.settings,
+                    label: 'الصيانة',
                     onTap: () {
-                      _showSnackBar(context, 'الدبوس');
+                      _showSnackBar(context, 'الصيانة');
                     },
                   ),
                   _buildHomeButton(
                     context: context,
-                    icon: Icons.science,
-                    label: 'السليكات',
+                    icon: Icons.calculate,
+                    label: 'الآلة الحاسبة',
                     onTap: () {
-                      _showSnackBar(context, 'السليكات');
+                      _showSnackBar(context, 'الآلة الحاسبة');
                     },
                   ),
                   _buildHomeButton(
                     context: context,
-                    icon: Icons.warehouse,
-                    label: 'المخازن',
+                    icon: Icons.group,
+                    label: 'طاقم العمل',
                     onTap: () {
-                      _showSnackBar(context, 'المخازن');
-                    },
-                  ),
-                  _buildHomeButton(
-                    context: context,
-                    icon: Icons.add,
-                    label: 'إضافة مقاس',
-                    onTap: () {
-                      _showSnackBar(context, 'إضافة مقاس');
-                    },
-                  ),
-                  _buildHomeButton(
-                    context: context,
-                    icon: Icons.save,
-                    label: 'المقاسات المحفوظة',
-                    onTap: () {
-                      _showSnackBar(context, 'المقاسات المحفوظة');
+                      _showSnackBar(context, 'طاقم العمل');
                     },
                   ),
                 ],

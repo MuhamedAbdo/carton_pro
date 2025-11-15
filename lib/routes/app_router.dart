@@ -1,17 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import '../screens/flexo_screen.dart';
 import '../screens/home_screen.dart';
 import '../screens/settings_screen.dart';
 import '../screens/splash_screen.dart';
 
 final GoRouter appRouter = GoRouter(
-  initialLocation: '/splash', // نعرض splash أولًا ثم ننتقل للرئيسية
+  initialLocation: '/', // الصفحة الافتراضية
   routes: [
-    GoRoute(
-      path: '/splash',
-      name: 'splash',
-      builder: (context, state) => const SplashScreen(),
-    ),
     GoRoute(
       path: '/',
       name: 'home',
@@ -21,6 +17,12 @@ final GoRouter appRouter = GoRouter(
       path: '/settings',
       name: 'settings',
       builder: (context, state) => const SettingsScreen(),
+    ),
+    GoRoute(
+      // ✅ إضافة Flexo Screen
+      path: '/flexo',
+      name: 'flexo',
+      builder: (context, state) => const FlexoScreen(),
     ),
   ],
 );
