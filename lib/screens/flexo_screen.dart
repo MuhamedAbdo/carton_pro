@@ -63,6 +63,15 @@ class FlexoScreen extends StatelessWidget {
                     },
                   ),
                   _buildHomeButton(
+                    // ✅ إضافة زر "بالتة ألوان"
+                    context: context,
+                    icon: Icons.palette,
+                    label: 'بالتة ألوان',
+                    onTap: () {
+                      context.push('/color_palette'); // ✅ استخدم go_router
+                    },
+                  ),
+                  _buildHomeButton(
                     context: context,
                     icon: Icons.inventory,
                     label: 'وارد المخزن',
