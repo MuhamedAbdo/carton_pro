@@ -1,165 +1,170 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../services/theme_service.dart';
 
-class SettingsScreen extends StatefulWidget {
+class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
 
   @override
-  State<SettingsScreen> createState() => _SettingsScreenState();
-}
-
-class _SettingsScreenState extends State<SettingsScreen> {
-  // Mock values for settings
-  bool _darkMode = false;
-  String _language = 'ar';
-  double _cameraQuality = 1.0; // 1.0 = highest, 0.1 = lowest
-
-  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('الإعدادات'),
-        centerTitle: true,
-      ),
-      body: ListView(
-        padding: const EdgeInsets.all(16.0),
-        children: [
-          // Theme Section
-          Card(
-            child: ExpansionTile(
-              title: const Text('المظهر'),
-              leading: const Icon(Icons.brightness_6),
-              children: [
-                SwitchListTile(
-                  title: const Text('الوضع الليلي'),
-                  value: _darkMode,
-                  onChanged: (bool value) {
-                    setState(() {
-                      _darkMode = value;
-                    });
-                    // TODO: Apply theme change
-                  },
-                ),
-              ],
-            ),
+    return Consumer<ThemeService>(
+      builder: (context, themeService, child) {
+        return Scaffold(
+          appBar: AppBar(
+            title: const Text('الإعدادات'),
+            centerTitle: true,
           ),
-
-          // Language Section
-          Card(
-            child: ExpansionTile(
-              title: const Text('اللغة'),
-              leading: const Icon(Icons.language),
-              children: [
-                RadioListTile<String>(
-                  title: const Text('العربية'),
-                  value: 'ar',
-                  groupValue: _language,
-                  onChanged: (String? value) {
-                    setState(() {
-                      _language = value!;
-                    });
-                    // TODO: Apply language change
-                  },
+          body: ListView(
+            padding: const EdgeInsets.all(16.0),
+            children: [
+              // Theme Section
+              Card(
+                child: ExpansionTile(
+                  title: const Text('المظهر'),
+                  leading: const Icon(Icons.brightness_6),
+                  children: [
+                    SwitchListTile(
+                      title: const Text('الوضع الليلي'),
+                      value: themeService
+                          .isDarkMode, // استخدم القيمة من ThemeService
+                      onChanged: (bool value) {
+                        themeService.updateDarkMode(
+                            value); // حدث القيمة في ThemeService
+                      },
+                    ),
+                  ],
                 ),
-                RadioListTile<String>(
-                  title: const Text('الإنجليزية'),
-                  value: 'en',
-                  groupValue: _language,
-                  onChanged: (String? value) {
-                    setState(() {
-                      _language = value!;
-                    });
-                    // TODO: Apply language change
-                  },
-                ),
-              ],
-            ),
-          ),
+              ),
 
-          // Camera Quality Section
-          Card(
-            child: ExpansionTile(
-              title: const Text('جودة الكاميرا'),
-              leading: const Icon(Icons.camera_alt),
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  child: Row(
-                    children: [
-                      const Text('منخفضة'),
-                      Expanded(
-                        child: Slider(
-                          value: _cameraQuality,
-                          min: 0.1,
-                          max: 1.0,
-                          divisions: 9,
-                          label: '${(_cameraQuality * 100).round()}%',
-                          onChanged: (double value) {
-                            setState(() {
-                              _cameraQuality = value;
-                            });
-                            // TODO: Apply camera quality setting
-                          },
-                        ),
+              // Language Section
+              Card(
+                child: ExpansionTile(
+                  title: const Text('اللغة'),
+                  leading: const Icon(Icons.language),
+                  children: [
+                    RadioListTile<String>(
+                      title: const Text('العربية'),
+                      value: 'ar',
+                      groupValue: themeService
+                          .settings.language, // استخدم القيمة من ThemeService
+                      onChanged: (String? value) {
+                        if (value != null) {
+                          themeService.updateLanguage(
+                              value); // حدث القيمة في ThemeService
+                        }
+                      },
+                    ),
+                    RadioListTile<String>(
+                      title: const Text('الإنجليزية'),
+                      value: 'en',
+                      groupValue: themeService
+                          .settings.language, // استخدم القيمة من ThemeService
+                      onChanged: (String? value) {
+                        if (value != null) {
+                          themeService.updateLanguage(
+                              value); // حدث القيمة في ThemeService
+                        }
+                      },
+                    ),
+                  ],
+                ),
+              ),
+
+              // Camera Quality Section
+              Card(
+                child: ExpansionTile(
+                  title: const Text('جودة الكاميرا'),
+                  leading: const Icon(Icons.camera_alt),
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      child: Row(
+                        children: [
+                          const Text('منخفضة'),
+                          Expanded(
+                            child: Slider(
+                              value: themeService.settings
+                                  .cameraQuality, // استخدم القيمة من ThemeService
+                              min: 0.1,
+                              max: 1.0,
+                              divisions: 9,
+                              label:
+                                  '${(themeService.settings.cameraQuality * 100).round()}%',
+                              onChanged: (double value) {
+                                themeService.updateCameraQuality(
+                                    value); // حدث القيمة في ThemeService
+                              },
+                            ),
+                          ),
+                          const Text('عالية'),
+                        ],
                       ),
-                      const Text('عالية'),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
-          ),
+              ),
 
-          // Login Type Section
-          Card(
-            child: ExpansionTile(
-              title: const Text('نوع الدخول'),
-              leading: const Icon(Icons.login),
-              children: [
-                RadioListTile<String>(
-                  title: const Text('مميز (مع حساب)'),
-                  value: 'authenticated',
-                  groupValue: 'guest', // Mock value for now
-                  onChanged: (String? value) {
-                    // TODO: Implement login type change
-                  },
+              // Login Type Section
+              Card(
+                child: ExpansionTile(
+                  title: const Text('نوع الدخول'),
+                  leading: const Icon(Icons.login),
+                  children: [
+                    RadioListTile<String>(
+                      title: const Text('مميز (مع حساب)'),
+                      value: 'authenticated',
+                      groupValue: themeService
+                          .settings.loginType, // استخدم القيمة من ThemeService
+                      onChanged: (String? value) {
+                        if (value != null) {
+                          themeService.updateLoginType(
+                              value); // حدث القيمة في ThemeService
+                        }
+                      },
+                    ),
+                    RadioListTile<String>(
+                      title: const Text('ضيف (بدون حساب)'),
+                      value: 'guest',
+                      groupValue: themeService
+                          .settings.loginType, // استخدم القيمة من ThemeService
+                      onChanged: (String? value) {
+                        if (value != null) {
+                          themeService.updateLoginType(
+                              value); // حدث القيمة في ThemeService
+                        }
+                      },
+                    ),
+                  ],
                 ),
-                RadioListTile<String>(
-                  title: const Text('ضيف (بدون حساب)'),
-                  value: 'guest',
-                  groupValue: 'guest',
-                  onChanged: (String? value) {
-                    // TODO: Implement login type change
-                  },
-                ),
-              ],
-            ),
-          ),
+              ),
 
-          // Backup Section
-          Card(
-            child: ExpansionTile(
-              title: const Text('النسخ الاحتياطي'),
-              leading: const Icon(Icons.backup),
-              children: [
-                ListTile(
-                  title: const Text('حفظ النسخة الاحتياطية'),
-                  leading: const Icon(Icons.save),
-                  onTap: () {
-                    // TODO: Implement backup save
-                  },
+              // Backup Section
+              Card(
+                child: ExpansionTile(
+                  title: const Text('النسخ الاحتياطي'),
+                  leading: const Icon(Icons.backup),
+                  children: [
+                    ListTile(
+                      title: const Text('حفظ النسخة الاحتياطية'),
+                      leading: const Icon(Icons.save),
+                      onTap: () {
+                        // TODO: Implement backup save
+                      },
+                    ),
+                    ListTile(
+                      title: const Text('استعادة النسخة الاحتياطية'),
+                      leading: const Icon(Icons.restore),
+                      onTap: () {
+                        // TODO: Implement backup restore
+                      },
+                    ),
+                  ],
                 ),
-                ListTile(
-                  title: const Text('استعادة النسخة الاحتياطية'),
-                  leading: const Icon(Icons.restore),
-                  onTap: () {
-                    // TODO: Implement backup restore
-                  },
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
-        ],
-      ),
+        );
+      },
     );
   }
 }
