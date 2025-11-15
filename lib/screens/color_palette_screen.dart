@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../widgets/app_drawer.dart';
+import 'color_detail_screen.dart'; // ✅ استيراد الشاشة
 
 // ✅ نسخة من موديل CMYK
 class CMYK {
@@ -109,8 +110,8 @@ class ColorPaletteScreen extends StatelessWidget {
 
             return GestureDetector(
               onTap: () {
-                // TODO: Navigate to Color Detail Screen
-                _showSnackBar(context, color.toString());
+                // ✅ Navigate to Color Detail Screen
+                context.push('/color_detail', extra: color);
               },
               child: Container(
                 decoration: BoxDecoration(
