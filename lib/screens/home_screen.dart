@@ -32,15 +32,15 @@ class HomeScreen extends StatelessWidget {
             ],
             onSelected: (value) {
               if (value == 'settings') {
-                // TODO: Navigate to settings
+                // Navigate to settings
               } else if (value == 'about') {
-                // TODO: Navigate to about
+                // Navigate to about
               }
             },
           ),
         ],
       ),
-      drawer: const AppDrawer(), // استخدام AppDrawer
+      drawer: const AppDrawer(), // إضافة AppDrawer
       body: const Center(
         child: Text(
           'مرحبًا بك في تطبيق CartonPro',
