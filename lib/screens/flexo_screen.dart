@@ -51,24 +51,26 @@ class FlexoScreen extends StatelessWidget {
                     icon: Icons.build_circle,
                     label: 'تركيب السيريل',
                     onTap: () {
-                      _showSnackBar(context, 'تركيب السيريل');
+                      context.push(
+                          '/serial_setup'); // ✅ Navigate to Serial Setup Screen
                     },
                   ),
                   _buildHomeButton(
                     context: context,
-                    icon: Icons.receipt,
-                    label: 'تقرير الأحبار',
-                    onTap: () {
-                      _showSnackBar(context, 'تقرير الأحبار');
-                    },
-                  ),
-                  _buildHomeButton(
-                    // ✅ إضافة زر "بالتة ألوان"
-                    context: context,
-                    icon: Icons.palette,
+                    icon: Icons.palette, // ✅ أيقونة "بالتة ألوان"
                     label: 'بالتة ألوان',
                     onTap: () {
-                      context.push('/color_palette'); // ✅ استخدم go_router
+                      context.push(
+                          '/color_palette'); // ✅ Navigate to Color Palette Screen
+                    },
+                  ),
+                  _buildHomeButton(
+                    context: context,
+                    icon: Icons.receipt, // ✅ أيقونة "تقرير الأحبار"
+                    label: 'تقرير الأحبار',
+                    onTap: () {
+                      context.push(
+                          '/ink_report'); // ✅ Navigate to Ink Report Screen
                     },
                   ),
                   _buildHomeButton(

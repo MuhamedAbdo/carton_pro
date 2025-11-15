@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../widgets/app_drawer.dart';
-import 'color_detail_screen.dart'; // ✅ استيراد الشاشة
+import 'color_detail_screen.dart';
 
 // ✅ نسخة من موديل CMYK
 class CMYK {
@@ -78,16 +78,15 @@ class ColorPaletteScreen extends StatelessWidget {
           IconButton(
             icon: const Icon(Icons.camera_alt),
             onPressed: () {
-              // TODO: Navigate to Camera Screen
-              _showSnackBar(context, 'الكاميرا');
+              // ✅ Navigate to Camera Screen
+              context.push('/camera_color_picker');
             },
           ),
           // أيقونة التركيب اليدوي
           IconButton(
             icon: const Icon(Icons.opacity),
             onPressed: () {
-              // TODO: Navigate to Manual Mix Screen
-              _showSnackBar(context, 'التركيب اليدوي');
+              context.push('/manual_mix');
             },
           ),
         ],
@@ -110,7 +109,6 @@ class ColorPaletteScreen extends StatelessWidget {
 
             return GestureDetector(
               onTap: () {
-                // ✅ Navigate to Color Detail Screen
                 context.push('/color_detail', extra: color);
               },
               child: Container(
@@ -131,23 +129,68 @@ class ColorPaletteScreen extends StatelessWidget {
   }
 
   List<CMYK> _generateCMYKColors() {
-    // إنشاء 200 لون (كما في الكود الأصلي)
+    // ✅ إنشاء ألوان مرتبة حسب المكون المسيطر وفرق 10%
     final List<CMYK> colors = [];
-    final Random rand = Random();
 
-    for (int i = 0; i < 200; i++) {
-      // إنشاء لون عشوائي
-      int c = rand.nextInt(101); // 0-100
-      int m = rand.nextInt(101); // 0-100
-      int y = rand.nextInt(101); // 0-100
-      int k = rand.nextInt(101); // 0-100
+    // عدد الألوان لكل مكون
+    int colorsPerGroup = 50; // 200 / 4 = 50
+
+    // 1. Cyan Dominant
+    for (int i = 0; i < colorsPerGroup; i++) {
+      int c = 100 - (i * 2); // 100 -> 2
+      int m = (i * 2) % 101; // 0 -> 100
+      int y = (i * 3) % 101; // 0 -> 100
+      int k = (i * 1) % 101; // 0 -> 100
 
       // ضمان المجموع = 100%
       int sum = c + m + y + k;
-      if (sum != 100) {
-        k = 100 - c - m - y;
-        k = k.clamp(0, 100).toInt(); // تأمين القيمة
-      }
+      if (sum != 100) k = 100 - c - m - y;
+      k = k.clamp(0, 100).toInt(); // تأمين القيمة
+
+      colors.add(CMYK(c, m, y, k));
+    }
+
+    // 2. Magenta Dominant
+    for (int i = 0; i < colorsPerGroup; i++) {
+      int m = 100 - (i * 2); // 100 -> 2
+      int c = (i * 2) % 101; // 0 -> 100
+      int y = (i * 3) % 101; // 0 -> 100
+      int k = (i * 1) % 101; // 0 -> 100
+
+      // ضمان المجموع = 100%
+      int sum = c + m + y + k;
+      if (sum != 100) k = 100 - c - m - y;
+      k = k.clamp(0, 100).toInt(); // تأمين القيمة
+
+      colors.add(CMYK(c, m, y, k));
+    }
+
+    // 3. Yellow Dominant
+    for (int i = 0; i < colorsPerGroup; i++) {
+      int y = 100 - (i * 2); // 100 -> 2
+      int c = (i * 2) % 101; // 0 -> 100
+      int m = (i * 3) % 101; // 0 -> 100
+      int k = (i * 1) % 101; // 0 -> 100
+
+      // ضمان المجموع = 100%
+      int sum = c + m + y + k;
+      if (sum != 100) k = 100 - c - m - y;
+      k = k.clamp(0, 100).toInt(); // تأمين القيمة
+
+      colors.add(CMYK(c, m, y, k));
+    }
+
+    // 4. Black Dominant
+    for (int i = 0; i < colorsPerGroup; i++) {
+      int k = 100 - (i * 2); // 100 -> 2
+      int c = (i * 2) % 101; // 0 -> 100
+      int m = (i * 3) % 101; // 0 -> 100
+      int y = (i * 1) % 101; // 0 -> 100
+
+      // ضمان المجموع = 100%
+      int sum = c + m + y + k;
+      if (sum != 100) k = 100 - c - m - y;
+      k = k.clamp(0, 100).toInt(); // تأمين القيمة
 
       colors.add(CMYK(c, m, y, k));
     }
