@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../screens/settings_screen.dart';
 
 class AppDrawer extends StatelessWidget {
   const AppDrawer({super.key});
@@ -57,7 +58,11 @@ class AppDrawer extends StatelessWidget {
                   onTap: () {
                     // Navigate to Settings
                     Navigator.pop(context);
-                    // TODO: Add navigation logic
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const SettingsScreen()),
+                    );
                   },
                 ),
                 ListTile(

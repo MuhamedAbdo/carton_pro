@@ -1,4 +1,4 @@
-import 'package:carton_pro/screens/lib/screens/home_screen.dart';
+import 'package:carton_pro/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
