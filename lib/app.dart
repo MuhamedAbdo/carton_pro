@@ -1,3 +1,4 @@
+import 'package:carton_pro/screens/lib/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -20,7 +21,7 @@ class MyApp extends StatelessWidget {
         brightness: Brightness.dark,
       ),
       themeMode: ThemeMode.system,
-      home: const Scaffold(body: Center(child: Text('Welcome to CartonPro'))),
+      home: const HomeScreen(), // استخدم HomeScreen
       builder: (context, child) {
         return AnnotatedRegion<SystemUiOverlayStyle>(
           value: Theme.of(context).brightness == Brightness.dark
