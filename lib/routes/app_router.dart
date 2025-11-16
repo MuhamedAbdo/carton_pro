@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../screens/camera_color_picker_screen.dart';
 import '../screens/color_detail_screen.dart';
@@ -9,11 +8,17 @@ import '../screens/ink_report_screen.dart'; // ✅ استيراد الشاشة
 import '../screens/manual_mix_screen.dart';
 import '../screens/serial_setup_screen.dart';
 import '../screens/settings_screen.dart';
-import '../screens/splash_screen.dart';
+import '../screens/splash_screen.dart'; // استيراد splash
 
 final GoRouter appRouter = GoRouter(
-  initialLocation: '/', // الصفحة الافتراضية
+  initialLocation: '/splash', // ✅ غير إلى splash
   routes: [
+    GoRoute(
+      path: '/splash',
+      name: 'splash',
+      builder: (context, state) =>
+          const SplashScreen(), // ✅ Route جديد لـ splash
+    ),
     GoRoute(
       path: '/',
       name: 'home',

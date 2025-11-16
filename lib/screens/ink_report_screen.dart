@@ -1,9 +1,10 @@
 import 'dart:io';
+import 'package:carton_pro/screens/full_screen_image_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import '../widgets/app_drawer.dart';
 import '../models/ink_report_model.dart'; // استيراد النموذج
+import '../widgets/image_picker_field.dart'; // استيراد الـ widget الجديد
 
 class InkReportScreen extends StatefulWidget {
   const InkReportScreen({super.key});
@@ -54,7 +55,7 @@ class _InkReportScreenState extends State<InkReportScreen> {
   void _showAddReportDialog() {
     showModalBottomSheet(
       context: context,
-      isScrollControlled: true,
+      isScrollControlled: true, // مهم لعرض الكاميرا بشكل سليم
       builder: (context) {
         return InkReportForm(
           onSave: (report) {
@@ -104,23 +105,8 @@ class _InkReportScreenState extends State<InkReportScreen> {
       'colors': report.colors,
       'quantity': report.quantity,
       'notes': report.notes,
-      'imagePaths': report.imageUrls,
+      'imagePaths': report.imageUrls, // تأكد من التسمية
     };
-  }
-
-  InkReport _convertMapToInkReport(Map<String, dynamic> map) {
-    return InkReport(
-      id: map['id'] ?? '',
-      date: map['date'] ?? '',
-      clientName: map['clientName'] ?? '',
-      product: map['product'] ?? '',
-      productCode: map['productCode'] ?? '',
-      dimensions: Map<String, dynamic>.from(map['dimensions'] ?? {}),
-      colors: List<Map<String, double>>.from(map['colors'] ?? []),
-      quantity: map['quantity'] ?? 0,
-      notes: map['notes'],
-      imageUrls: List<String>.from(map['imagePaths'] ?? []),
-    );
   }
 
   String _formatDimensions(Map? dims) {
@@ -377,6 +363,7 @@ class _InkReportScreenState extends State<InkReportScreen> {
                           return Text("🎨 $colorName - $quantity لتر");
                         }),
                       if (report.imageUrls.isNotEmpty)
+                        // تعديل عرض الصور في الـ Card
                         SizedBox(
                           height: 60,
                           child: ListView.builder(
@@ -396,11 +383,26 @@ class _InkReportScreenState extends State<InkReportScreen> {
                               return Padding(
                                 padding:
                                     const EdgeInsets.symmetric(horizontal: 4.0),
-                                child: Image.file(
-                                  file,
-                                  width: 50,
-                                  height: 50,
-                                  fit: BoxFit.cover,
+                                child: GestureDetector(
+                                  // إضافة GestureDetector للانتقال لعرض الصورة
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            FullScreenImageScreen(
+                                          imagePaths: report.imageUrls,
+                                          initialIndex: i,
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                  child: Image.file(
+                                    file,
+                                    width: 50,
+                                    height: 50,
+                                    fit: BoxFit.cover,
+                                  ),
                                 ),
                               );
                             },
@@ -779,6 +781,19 @@ class _InkReportFormState extends State<InkReportForm> {
                     onPressed: _addColorField,
                     icon: const Icon(Icons.add),
                     label: const Text("إضافة لون")),
+                const SizedBox(height: 16),
+                // إضافة ImagePickerField
+                const Text("📸 الصور",
+                    style: TextStyle(fontWeight: FontWeight.bold)),
+                const SizedBox(height: 8),
+                ImagePickerField(
+                  imagePaths: _imagePaths,
+                  onImagesChanged: (paths) {
+                    setState(() {
+                      _imagePaths = paths;
+                    });
+                  },
+                ),
                 const SizedBox(height: 16),
                 TextFormField(
                   controller: quantityController,

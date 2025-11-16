@@ -1,9 +1,6 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../widgets/app_drawer.dart';
-import 'color_detail_screen.dart';
 
 // ✅ نسخة من موديل CMYK
 class CMYK {
@@ -198,12 +195,4 @@ class ColorPaletteScreen extends StatelessWidget {
     return colors;
   }
 
-  void _showSnackBar(BuildContext context, String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(message),
-        duration: const Duration(seconds: 1),
-      ),
-    );
-  }
 }

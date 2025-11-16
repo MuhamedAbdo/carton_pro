@@ -29,6 +29,10 @@ class ThemeService extends ChangeNotifier {
     final savedSettings = box.get(_settingsKey);
     if (savedSettings != null) {
       _settings = savedSettings;
+    } else {
+      // إذا مكنش في إعدادات محفوظة، استخدم الإعدادات الافتراضية واحفظها
+      _settings = defaultSettings;
+      _saveSettings();
     }
   }
 

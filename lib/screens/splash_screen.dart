@@ -23,61 +23,66 @@ class _SplashScreenState extends State<SplashScreen> {
       _navigated = true;
       Future.delayed(const Duration(seconds: 2), () {
         if (!mounted) return;
-        // استبدل باسم المسار الذي تستخدمه ('home' أو '/') حسب router لديك
-        context.goNamed('home'); // أو context.go('/');
+        // ✅ غير إلى goNamed('home') علشان تروح للصفحة الرئيسية
+        context.goNamed('home');
       });
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    // استمع لتغيرات ThemeService حتى تتغير الصورة تلقائيًا عند تبديل الثيم
-    final isDarkMode = context.watch<ThemeService>().isDarkMode;
+    // ✅ استخدم Consumer علشان تلاقي ThemeService وتحديثات الثيم
+    return Consumer<ThemeService>(
+      builder: (context, themeService, child) {
+        // استخدم themeService.isDarkMode أو themeService.settings
+        bool isDarkMode = themeService.isDarkMode;
 
-    return Scaffold(
-      body: Container(
-        width: double.infinity,
-        height: double.infinity,
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [
-              Theme.of(context).primaryColor,
-              Theme.of(context).colorScheme.secondary,
-            ],
+        return Scaffold(
+          body: Container(
+            width: double.infinity,
+            height: double.infinity,
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [
+                  Theme.of(context).primaryColor,
+                  Theme.of(context).colorScheme.secondary,
+                ],
+              ),
+            ),
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  CircleAvatar(
+                    radius: 70,
+                    backgroundImage: AssetImage(
+                      isDarkMode
+                          ? 'assets/images/logo_dark.png'
+                          : 'assets/images/logo_light.png',
+                    ),
+                    backgroundColor: Colors.white,
+                  ),
+                  const SizedBox(height: 20),
+                  const Text(
+                    'CartonPro',
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  const CircularProgressIndicator(
+                    valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                  ),
+                ],
+              ),
+            ),
           ),
-        ),
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              CircleAvatar(
-                radius: 50,
-                backgroundImage: AssetImage(
-                  isDarkMode
-                      ? 'assets/images/logo_dark.png'
-                      : 'assets/images/logo_light.png',
-                ),
-                backgroundColor: Colors.white,
-              ),
-              const SizedBox(height: 20),
-              const Text(
-                'CartonPro',
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
-              ),
-              const SizedBox(height: 10),
-              const CircularProgressIndicator(
-                valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-              ),
-            ],
-          ),
-        ),
-      ),
+        );
+      },
     );
   }
 }
