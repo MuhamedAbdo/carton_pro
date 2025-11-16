@@ -87,7 +87,8 @@ class FlexoScreen extends StatelessWidget {
                     icon: Icons.settings,
                     label: 'الصيانة',
                     onTap: () {
-                      _showSnackBar(context, 'الصيانة');
+                      context.push(
+                          '/maintenance'); // ✅ Navigate to Maintenance Screen
                     },
                   ),
                   _buildHomeButton(
@@ -95,7 +96,8 @@ class FlexoScreen extends StatelessWidget {
                     icon: Icons.calculate,
                     label: 'الآلة الحاسبة',
                     onTap: () {
-                      _showSnackBar(context, 'الآلة الحاسبة');
+                      context.push(
+                          '/calculator'); // ✅ Navigate to Calculator Screen
                     },
                   ),
                   _buildHomeButton(
@@ -103,7 +105,7 @@ class FlexoScreen extends StatelessWidget {
                     icon: Icons.group,
                     label: 'طاقم العمل',
                     onTap: () {
-                      _showSnackBar(context, 'طاقم العمل');
+                      context.push('/workers'); // ✅ Navigate to Workers Screen
                     },
                   ),
                 ],

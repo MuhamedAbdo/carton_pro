@@ -1,3 +1,5 @@
+// lib/routes/app_router.dart
+import 'package:carton_pro/screens/workers_screen.dart';
 import 'package:go_router/go_router.dart';
 import '../screens/camera_color_picker_screen.dart';
 import '../screens/color_detail_screen.dart';
@@ -10,6 +12,8 @@ import '../screens/serial_setup_screen.dart';
 import '../screens/settings_screen.dart';
 import '../screens/splash_screen.dart'; // استيراد splash
 import '../screens/store_entry_screen.dart'; // ✅ استيراد شاشة وارد المخزن
+import '../screens/maintenance_screen.dart'; // ✅ استيراد شاشة الصيانة
+import '../screens/calculator_screen.dart'; // ✅ استيراد شاشة الآلة الحاسبة
 
 final GoRouter appRouter = GoRouter(
   initialLocation: '/splash', // ✅ غير إلى splash
@@ -75,5 +79,23 @@ final GoRouter appRouter = GoRouter(
       name: 'store_entry',
       builder: (context, state) => const StoreEntryScreen(),
     ),
+    // ✅ إضافة Maintenance Screen
+    GoRoute(
+      path: '/maintenance',
+      name: 'maintenance',
+      builder: (context, state) => const MaintenanceScreen(),
+    ),
+    // ✅ إضافة Calculator Screen
+    GoRoute(
+      path: '/calculator',
+      name: 'calculator',
+      builder: (context, state) => const CalculatorScreen(),
+    ),
+    GoRoute(
+      path: '/workers',
+      name: 'workers',
+      builder: (context, state) => const WorkersScreen(),
+    ),
+    // ... بقية routes ...
   ],
 );
