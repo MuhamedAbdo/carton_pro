@@ -9,6 +9,7 @@ import '../screens/manual_mix_screen.dart';
 import '../screens/serial_setup_screen.dart';
 import '../screens/settings_screen.dart';
 import '../screens/splash_screen.dart'; // استيراد splash
+import '../screens/store_entry_screen.dart'; // ✅ استيراد شاشة وارد المخزن
 
 final GoRouter appRouter = GoRouter(
   initialLocation: '/splash', // ✅ غير إلى splash
@@ -67,6 +68,12 @@ final GoRouter appRouter = GoRouter(
       path: '/ink_report',
       name: 'ink_report',
       builder: (context, state) => const InkReportScreen(),
+    ),
+    // ✅ إضافة Store Entry Screen
+    GoRoute(
+      path: '/store_entry',
+      name: 'store_entry',
+      builder: (context, state) => const StoreEntryScreen(),
     ),
   ],
 );

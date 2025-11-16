@@ -19,10 +19,11 @@ class ImagePickerField extends StatefulWidget {
 }
 
 class _ImagePickerFieldState extends State<ImagePickerField> {
-  late CameraController _cameraController;
-  late Future<void> _initializeControllerFuture;
+  CameraController? _cameraController; // ✅ غير late إلى عادي مع ?
+  Future<void>? _initializeControllerFuture; // ✅ غير late إلى عادي مع ?
   List<CameraDescription>? _cameras;
   bool _isCameraReady = false;
+  bool _cameraError = false; // ✅ متغير جديد لتحديد وجود خطأ
 
   @override
   void initState() {
@@ -35,6 +36,11 @@ class _ImagePickerFieldState extends State<ImagePickerField> {
       _cameras = await availableCameras();
       if (_cameras == null || _cameras!.isEmpty) {
         debugPrint('No cameras found.');
+        if (mounted) {
+          setState(() {
+            _cameraError = true; // ✅ علم على وجود خطأ
+          });
+        }
         return;
       }
 
@@ -44,27 +50,34 @@ class _ImagePickerFieldState extends State<ImagePickerField> {
       );
 
       _cameraController = CameraController(
+        // ✅ حط القيمة في _cameraController
         camera,
         ResolutionPreset.medium,
         imageFormatGroup: ImageFormatGroup.jpeg,
       );
-      _initializeControllerFuture = _cameraController.initialize();
-      _initializeControllerFuture.then((_) {
-        if (mounted) {
-          setState(() {
-            _isCameraReady = true;
-          });
-        }
-      });
+      _initializeControllerFuture = _cameraController!
+          .initialize(); // ✅ استخدم ! علشانك متأكد إن _cameraController م-initialized
+      await _initializeControllerFuture; // ✅ انتظر التهيئة
+      if (mounted) {
+        setState(() {
+          _isCameraReady = true; // ✅ عدل الحالة بعد التهيئة
+        });
+      }
     } catch (e) {
       debugPrint('Camera init error: $e');
+      if (mounted) {
+        setState(() {
+          _cameraError = true; // ✅ علم على وجود خطأ
+        });
+      }
     }
   }
 
   Future<void> _takePicture() async {
-    if (!_isCameraReady) return;
+    if (!_isCameraReady || _cameraController == null)
+      return; // ✅ تأكد من التهيئة
     try {
-      final XFile file = await _cameraController.takePicture();
+      final XFile file = await _cameraController!.takePicture(); // ✅ استخدم !
       if (!mounted) return;
 
       setState(() {
@@ -85,7 +98,7 @@ class _ImagePickerFieldState extends State<ImagePickerField> {
 
   @override
   void dispose() {
-    _cameraController.dispose();
+    _cameraController?.dispose(); // ✅ استخدم ?.dispose()
     super.dispose();
   }
 
@@ -93,23 +106,18 @@ class _ImagePickerFieldState extends State<ImagePickerField> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        if (_isCameraReady)
+        // ✅ عرض رسالة الخطأ أو الكاميرا
+        if (_cameraError)
+          const Center(child: Text('❌ خطأ في تهيئة الكاميرا'))
+        else if (_isCameraReady &&
+            _cameraController != null) // ✅ تأكد من _cameraController
           SizedBox(
             height: 150, // ارتفاع كافٍ للكاميرا
             child: Stack(
               fit: StackFit.expand,
               children: [
                 // كاميرا
-                FutureBuilder<void>(
-                  future: _initializeControllerFuture,
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.done) {
-                      return CameraPreview(_cameraController);
-                    } else {
-                      return const Center(child: CircularProgressIndicator());
-                    }
-                  },
-                ),
+                CameraPreview(_cameraController!), // ✅ استخدم !
                 // زر التقاط
                 Align(
                   alignment: Alignment.bottomCenter,

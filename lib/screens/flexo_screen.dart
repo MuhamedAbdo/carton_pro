@@ -78,7 +78,8 @@ class FlexoScreen extends StatelessWidget {
                     icon: Icons.inventory,
                     label: 'وارد المخزن',
                     onTap: () {
-                      _showSnackBar(context, 'وارد المخزن');
+                      context.push(
+                          '/store_entry'); // ✅ Navigate to Store Entry Screen
                     },
                   ),
                   _buildHomeButton(
