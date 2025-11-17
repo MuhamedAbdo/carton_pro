@@ -1,5 +1,4 @@
 // lib/routes/app_router.dart
-import 'package:carton_pro/screens/workers_screen.dart';
 import 'package:go_router/go_router.dart';
 import '../screens/camera_color_picker_screen.dart';
 import '../screens/color_detail_screen.dart';
@@ -14,9 +13,10 @@ import '../screens/splash_screen.dart'; // استيراد splash
 import '../screens/store_entry_screen.dart'; // ✅ استيراد شاشة وارد المخزن
 import '../screens/maintenance_screen.dart'; // ✅ استيراد شاشة الصيانة
 import '../screens/calculator_screen.dart'; // ✅ استيراد شاشة الآلة الحاسبة
+import '../screens/workers_screen.dart'; // ✅ استيراد شاشة العمال
 
 final GoRouter appRouter = GoRouter(
-  initialLocation: '/splash', // ✅ غير إلى splash
+  initialLocation: '/', // ✅ غير إلى '/' لتجنب splash الإضافي
   routes: [
     GoRoute(
       path: '/splash',
@@ -91,6 +91,7 @@ final GoRouter appRouter = GoRouter(
       name: 'calculator',
       builder: (context, state) => const CalculatorScreen(),
     ),
+    // ✅ إضافة Workers Screen
     GoRoute(
       path: '/workers',
       name: 'workers',

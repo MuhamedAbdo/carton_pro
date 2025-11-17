@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart'; // ✅ استيراد hive_flutter
 import 'package:carton_pro/models/maintenance_record.dart'; // ✅ استيراد النموذج
 import 'package:carton_pro/widgets/image_picker_field.dart'; // ✅ استيراد ImagePickerField
+import 'package:provider/provider.dart'; // ✅ استيراد provider لجلب ThemeService
+import 'package:carton_pro/services/theme_service.dart'; // ✅ استيراد ThemeService
 
 class MaintenanceForm extends StatefulWidget {
   final dynamic recordKey; // ✅ مفتاح الـ record في Hive للتعديل
@@ -42,6 +44,9 @@ class _MaintenanceFormState extends State<MaintenanceForm> {
 
   List<String> _imagePaths = []; // ✅ متغير لحفظ مسارات الصور
 
+  // ✅ إضافة متغير لجودة الكاميرا
+  late double _cameraQuality;
+
   bool isFixed = false;
   String repairLocation = 'في المصنع';
 
@@ -49,6 +54,8 @@ class _MaintenanceFormState extends State<MaintenanceForm> {
   void initState() {
     super.initState();
     _initializeControllers();
+    // ✅ جلب جودة الكاميرا من ThemeService
+    _cameraQuality = context.read<ThemeService>().settings.cameraQuality;
   }
 
   void _initializeControllers() {
@@ -281,6 +288,7 @@ class _MaintenanceFormState extends State<MaintenanceForm> {
                       _imagePaths = paths;
                     });
                   },
+                  cameraQuality: _cameraQuality, // ✅ تمرير جودة الكاميرا
                 ),
                 const SizedBox(height: 24),
                 Row(

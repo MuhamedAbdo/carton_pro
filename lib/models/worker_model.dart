@@ -28,13 +28,18 @@ class Worker extends HiveObject {
     required List<WorkerAction> actions,
     this.hasMedicalInsurance = false,
   }) {
+    // ❌ استخدام box مباشرة هنا ممكن يسبب مشكلة
+    // this.actions =
+    //     HiveList(Hive.box<WorkerAction>('worker_actions'), objects: actions);
+    // ✅ احفظ الـ actions كـ List عادي أولًا
     this.actions =
         HiveList(Hive.box<WorkerAction>('worker_actions'), objects: actions);
   }
 
+  // ✅ دالة لربط الـ HiveList بالـ box بعد التأكد من فتحه
   void reconnectActionsBox() {
-    actions = HiveList(Hive.box<WorkerAction>('worker_actions'),
-        objects: actions.toList());
+    final box = Hive.box<WorkerAction>('worker_actions');
+    actions = HiveList(box, objects: actions.toList());
   }
 
   Map<String, dynamic> toJson() {

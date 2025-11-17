@@ -1,7 +1,10 @@
+// lib/widgets/store_entry_form.dart
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:carton_pro/models/store_entry_model.dart';
 import 'package:carton_pro/widgets/image_picker_field.dart'; // استيراد ImagePickerField
+import 'package:provider/provider.dart'; // ✅ استيراد provider
+import 'package:carton_pro/services/theme_service.dart'; // ✅ استيراد ThemeService
 
 class StoreEntryForm extends StatefulWidget {
   final dynamic recordKey; // مفتاح الـ record في Hive للتعديل
@@ -33,10 +36,15 @@ class _StoreEntryFormState extends State<StoreEntryForm> {
 
   List<String> _imagePaths = [];
 
+  // ✅ إضافة متغير لجودة الكاميرا
+  late double _cameraQuality;
+
   @override
   void initState() {
     super.initState();
     _initializeControllers();
+    // ✅ جلب جودة الكاميرا من ThemeService
+    _cameraQuality = context.read<ThemeService>().settings.cameraQuality;
   }
 
   void _initializeControllers() {
@@ -185,7 +193,7 @@ class _StoreEntryFormState extends State<StoreEntryForm> {
                 validator: (v) => v!.isEmpty ? "مطلوب" : null,
               ),
               const SizedBox(height: 16),
-              // إضافة ImagePickerField
+              // ✅ إضافة ImagePickerField مع تمرير cameraQuality
               const Text("📸 الصور (اختياري)",
                   style: TextStyle(fontWeight: FontWeight.bold)),
               const SizedBox(height: 8),
@@ -196,6 +204,7 @@ class _StoreEntryFormState extends State<StoreEntryForm> {
                     _imagePaths = paths;
                   });
                 },
+                cameraQuality: _cameraQuality, // ✅ تمرير جودة الكاميرا
               ),
               const SizedBox(height: 16),
               TextFormField(

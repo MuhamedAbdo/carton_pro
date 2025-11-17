@@ -1,10 +1,12 @@
 import 'dart:io';
 import 'package:carton_pro/screens/full_screen_image_screen.dart';
+import 'package:carton_pro/services/theme_service.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import '../widgets/app_drawer.dart';
 import '../models/ink_report_model.dart'; // استيراد النموذج
 import '../widgets/image_picker_field.dart'; // استيراد الـ widget الجديد
+import 'package:provider/provider.dart'; // ✅ استيراد provider
 
 class InkReportScreen extends StatefulWidget {
   const InkReportScreen({super.key});
@@ -499,10 +501,15 @@ class _InkReportFormState extends State<InkReportForm> {
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
+  // ✅ إضافة متغير لجودة الكاميرا
+  late double _cameraQuality;
+
   @override
   void initState() {
     super.initState();
     _initializeControllers();
+    // ✅ جلب جودة الكاميرا من ThemeService
+    _cameraQuality = context.read<ThemeService>().settings.cameraQuality;
   }
 
   void _initializeControllers() {
@@ -793,6 +800,7 @@ class _InkReportFormState extends State<InkReportForm> {
                       _imagePaths = paths;
                     });
                   },
+                  cameraQuality: _cameraQuality, // ✅ تمرير جودة الكاميرا
                 ),
                 const SizedBox(height: 16),
                 TextFormField(

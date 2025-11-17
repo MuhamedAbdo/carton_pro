@@ -1,7 +1,8 @@
-// lib/screens/maintenance_screen.dart
+import 'package:carton_pro/services/theme_service.dart';
 import 'package:carton_pro/widgets/maintenance/maintenance_section.dart';
 import 'package:flutter/material.dart';
 import 'package:carton_pro/widgets/app_drawer.dart';
+import 'package:provider/provider.dart'; // ✅ استيراد provider
 
 class MaintenanceScreen extends StatelessWidget {
   const MaintenanceScreen({super.key});
@@ -15,9 +16,8 @@ class MaintenanceScreen extends StatelessWidget {
         centerTitle: true,
       ),
       body: const MaintenanceSection(
-        boxName: 'maintenanceRecords', // ✅ اسم الـ box
-        title:
-            "سجلات الصيانة", // ✅ عنوان القسم (ممكن تستخدمه في MaintenanceSection)
+        boxName: 'maintenanceRecords',
+        title: "سجلات الصيانة",
       ),
     );
   }

@@ -30,9 +30,15 @@ class AppService {
     await Hive.openBox<StoreEntry>('storeEntries'); // ✅ فتح storeEntries box
     await Hive.openBox<MaintenanceRecord>(
         'maintenanceRecords'); // ✅ فتح maintenanceRecords box
-    await Hive.openBox<Worker>('workers'); // ✅ فتح workers box
     await Hive.openBox<WorkerAction>(
-        'worker_actions'); // ✅ فتح worker_actions box
+        'worker_actions'); // ✅ فتح worker_actions box أولاً
+    await Hive.openBox<Worker>('workers'); // ✅ فتح workers box
+
+    // ✅ تأكد من أن worker_actions box مفتوح قبل استخدام Worker
+    final workersBox = Hive.box<Worker>('workers');
+    for (var worker in workersBox.values) {
+      worker.reconnectActionsBox(); // ✅ ربط HiveList بالـ box
+    }
   }
 
   static Future<ThemeService> initializeThemeService() async {

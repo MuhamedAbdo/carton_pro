@@ -3,6 +3,8 @@ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:image/image.dart' as img;
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart'; // ✅ استيراد provider
+import '../services/theme_service.dart'; // ✅ استيراد ThemeService
 import 'color_palette_screen.dart'; // استيراد CMYK
 
 class CameraColorPickerScreen extends StatefulWidget {
@@ -39,9 +41,16 @@ class _CameraColorPickerScreenState extends State<CameraColorPickerScreen> {
         orElse: () => cameras![0],
       );
 
+      // ✅ جلب cameraQuality من ThemeService
+      final themeService = context.read<ThemeService>();
+      double quality = themeService.settings.cameraQuality;
+
+      // ✅ تحويل الجودة إلى ResolutionPreset
+      ResolutionPreset preset = _getResolutionPreset(quality);
+
       _controller = CameraController(
         camera,
-        ResolutionPreset.medium,
+        preset, // ✅ استخدام preset المحدد
         imageFormatGroup: ImageFormatGroup.jpeg,
       );
       _initializeControllerFuture = _controller.initialize();
@@ -49,6 +58,17 @@ class _CameraColorPickerScreenState extends State<CameraColorPickerScreen> {
       setState(() {});
     } catch (e) {
       _showError('Camera init error: $e');
+    }
+  }
+
+  // ✅ دالة لتحويل الجودة إلى ResolutionPreset
+  ResolutionPreset _getResolutionPreset(double quality) {
+    if (quality <= 0.33) {
+      return ResolutionPreset.low;
+    } else if (quality <= 0.66) {
+      return ResolutionPreset.medium;
+    } else {
+      return ResolutionPreset.high; // أو max، حسب الحاجة
     }
   }
 

@@ -1,3 +1,4 @@
+// lib/my_app.dart
 import 'package:carton_pro/routes/app_router.dart';
 import 'package:carton_pro/themes/app_theme.dart';
 import 'package:flutter/material.dart';
